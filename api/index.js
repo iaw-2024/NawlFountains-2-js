@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const PORT = 3001;
 
 // template for datos.json path
 const datosPath = "./public/datos.json";
@@ -13,6 +14,6 @@ app.get("/cliente_servidor", (req, res) => res.send(JSON.stringify(datos)));
 
 app.use(express.static('public'))
 
-app.listen(3001, () => console.log("Server ready on port 3001."));
+app.listen(PORT, () => console.log("Server ready on port " + PORT + "."));
 
 module.exports = app;
