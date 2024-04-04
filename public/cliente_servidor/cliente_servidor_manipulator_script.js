@@ -1,6 +1,6 @@
 function obtenerDatos() {
     ulHTML = document.getElementById("listado_inscripciones");
-    fetch("http://localhost:3001/obtenerDatos")
+    fetch("/obtenerDatos")
     .then(
         response => response.json())
     .then(data => {
