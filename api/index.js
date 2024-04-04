@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3001;
 const datosPath = "/datos.json";
 
 // endpoint /express that returns the list of items in datos.json
-app.get("/obtenerDatos", (req, res) => res.sendFile(datosPath, { root: '.'}));
+app.get("/obtenerDatos", (req, res) => res.sendFile(datosPath));
 
 // endpoint called cliente_servidor that returns the list of items in datos.json
 
