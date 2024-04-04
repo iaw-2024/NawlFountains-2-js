@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // template for datos.json path
 const datosPath = "./public/datos.json";
