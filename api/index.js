@@ -3,10 +3,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // template for datos.json path
-const datosPath = "/api/datos.json";
+const datosPath = "/datos.json";
 
 // endpoint /express that returns the list of items in datos.json
-app.get("/obtenerDatos", (req, res) => res.sendFile(datosPath, { root: '.'}));
+app.get("/obtenerDatos", (req, res) => res.send(datosPath, { root: '.'}));
 
 app.get("/test", (req, res) => res.send("test"));
 // endpoint called cliente_servidor that returns the list of items in datos.json
