@@ -11,8 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // endpoint which fetch the list of items in datos.json
 app.get("/cliente_servidor", (req, res) => {
-    let dataURL = "http://"+req.hostname+":/datos.json";
-    console.log("Search data in " + dataURL);
+    let dataURL = "http://"+req.hostname+"/datos.json";
     fetch(dataURL)
     .then(
         response => response.json())
@@ -24,36 +23,33 @@ app.get("/cliente_servidor", (req, res) => {
 // endpoint that dyanmically generates the list of items in datos.json
 app.get("/express", (req, res) => {
     //Retrive express/listado_tailwindcss.html from public
-    let datosPath = "public/datos.json";
-    let staticHTML = fs.readFileSync('public/express/listado_tailwindcss.html');
-    fs.readFile('public/express/listado_tailwindcss.html', 'utf8', (err, staticHTML) => {
-        if (err) {
-            console.error('Error reading HTML file:', err);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-        fs.readFile(datosPath, (err, data) => {
-            if (err) {
-                console.log(err);
-                throw err;
-            } else {
-                let datos = JSON.parse(data);
-                let dynamicHTML = "";
-                let modifiedHTML = "";
-                for (let i = 0; i < datos.length; i++) {
-                    dynamicHTML += '<li class="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 space-y-2 sm:space-y-0 sm:p-3 bg-gray-100 sm:rounded-lg">'+
-                    '<p>' + datos[i].nombre + '</p>' +
-                    '<p>' + datos[i].dni + '</p>' +
-                    '<p>' + datos[i].lu + '</p>' +
-                    '<p>' + datos[i].email + '</p>' +
-                    '<p>' + datos[i].fecha + '</p> </li>';
-                }
-                modifiedHTML = staticHTML.replace('</ul>', dynamicHTML + '</ul>');
-                res.send(modifiedHTML);
-            }
-        })
+    let dataURL = "http://"+req.hostname+"/datos.json";
+    let staticHTMLURL = "http://"+req.hostname+"/express/listado_tailwindcss.html";
+
+    fetch(staticHTMLURL)
+    .then(
+        response => response.text())
+    .then(data => {
+        staticHTML = data;
     });
 
+    fetch (dataURL)
+    .then(
+        response => response.json())
+    .then(data => {
+            let dynamicHTML = "";
+            let modifiedHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                dynamicHTML += '<li class="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 space-y-2 sm:space-y-0 sm:p-3 bg-gray-100 sm:rounded-lg">'+
+                '<p>' + data[i].nombre + '</p>' +
+                '<p>' + data[i].dni + '</p>' +
+                '<p>' + data[i].lu + '</p>' +
+                '<p>' + data[i].email + '</p>' +
+                '<p>' + data[i].fecha + '</p> </li>';
+            }
+            modifiedHTML = staticHTML.replace('</ul>', dynamicHTML + '</ul>');
+            res.send(modifiedHTML);
+    })
 });
 
 app.get("/test", (req, res) => {
