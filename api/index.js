@@ -43,6 +43,17 @@ app.get("/express", (req, res) => {
 
 });
 
+app.get("/test", (req, res) => {
+    let lsFiles = "";
+    fs.readdir(process.cwd(), (err, files) => {
+        files.forEach(file => {
+            console.log(file);
+          lsFiles += file + "\n";
+        });
+      });
+    res.send(lsFiles);
+});
+
 app.use(express.static('public'))
 
 app.listen(PORT, () => console.log("Server ready on port " + PORT + "."));
