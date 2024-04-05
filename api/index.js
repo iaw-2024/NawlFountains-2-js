@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3001;
 // endpoint which fetch the list of items in datos.json
 app.get("/cliente_servidor", (req, res) => {
     let dataURL = "http://"+req.hostname+":"+PORT+"/datos.json";
+    console.log("Search data in " + dataURL);
     fetch(dataURL)
     .then(
         response => response.json())
@@ -23,9 +24,9 @@ app.get("/cliente_servidor", (req, res) => {
 // endpoint that dyanmically generates the list of items in datos.json
 app.get("/express", (req, res) => {
     //Retrive express/listado_tailwindcss.html from public
-    let dataURL = "http://"+req.hostname+":"+PORT+"/datos.json";
-    let staticHTML = fs.readFileSync(req.hostname+":"+PORT+'/express/listado_tailwindcss.html');
-    fs.readFile(req.hostname+'express/listado_tailwindcss.html', 'utf8', (err, staticHTML) => {
+    let datosPath = "public/datos.json";
+    let staticHTML = fs.readFileSync('public/express/listado_tailwindcss.html');
+    fs.readFile('public/express/listado_tailwindcss.html', 'utf8', (err, staticHTML) => {
         if (err) {
             console.error('Error reading HTML file:', err);
             res.status(500).send('Internal Server Error');
