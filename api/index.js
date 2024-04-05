@@ -45,7 +45,7 @@ app.get("/express", (req, res) => {
 
 app.get("/test", (req, res) => {
     let lsFiles = "";
-    fs.readdir(process.cwd(), (err, files) => {
+    fs.readdir(process.cwd()+"/api", (err, files) => {
         files.forEach(file => {
             console.log(file);
           lsFiles += file + "\n";
