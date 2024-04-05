@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // endpoint which fetch the list of items in datos.json
 app.get("/cliente_servidor", (req, res) => {
-    let dataURL = "http://"+req.hostname+":"+PORT+"/datos.json";
+    let dataURL = "http://"+req.hostname+":/datos.json";
     console.log("Search data in " + dataURL);
     fetch(dataURL)
     .then(
