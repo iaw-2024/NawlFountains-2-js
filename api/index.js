@@ -25,7 +25,8 @@ app.get("/express", (req, res) => {
     //Retrive express/listado_tailwindcss.html from public
     let dataURL = "http://"+req.hostname+"/datos.json";
     let staticHTMLURL = "http://"+req.hostname+"/express/listado_tailwindcss.html";
-
+    let staticHTML = "";
+    
     fetch(staticHTMLURL)
     .then(
         response => response.text())
