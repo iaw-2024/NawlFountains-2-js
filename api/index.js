@@ -6,7 +6,17 @@ const PORT = process.env.PORT || 3001;
 // template for datos.json path
 
 // endpoint that returns the list of items in datos.json
-app.get("/cliente_servidor", (req, res) => res.sendFile(`/datos.json`, { root: '.'}));
+// app.get("/cliente_servidor", (req, res) => res.sendFile(`/datos.json`, { root: '.'}));
+
+// endpoint which fetch the list of items in datos.json
+app.get("/cliente_servidor", (req, res) => {
+    fetch("https://660f50c7356b87a55c512942.mockapi.io/api/mockup/InscripcionAlumno")
+    .then(
+        response => response.json())
+    .then(data => {
+        res.send(data);
+    })
+});
 
 // endpoint that dyanmically generates the list of items in datos.json
 app.get("/express", (req, res) => {
