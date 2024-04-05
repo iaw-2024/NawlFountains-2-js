@@ -22,7 +22,7 @@ app.get("/cliente_servidor", (req, res) => {
 
 // endpoint that dyanmically generates the list of items in datos.json
 app.get("/express", async (req, res) => {
-    let staticHTMLURL = "http://"+req.hostname+":3001/express/listado_tailwindcss.html";
+    let staticHTMLURL = "http://"+req.hostname+"/express/listado_tailwindcss.html";
     let staticHTMLResponse = await fetch(staticHTMLURL);
     let staticHTML = await staticHTMLResponse.text();
 
