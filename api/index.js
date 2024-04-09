@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3001;
 
 // endpoint which fetch the list of items in datos.json
 app.get("/cliente_servidor", (req, res) => {
+    console.log("Asking in "+process.cwd()+'/public/datos.json');
     res.sendFile("/public/datos.json", { root: process.cwd() });
 });
 
