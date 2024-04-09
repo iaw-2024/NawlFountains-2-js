@@ -4,7 +4,6 @@ function generarDatos() {
     .then(
         response => response.json())
     .then(data => {
-        console.log(data);
         for (let i = 0; i < data.length; i++) {
             liTemplateHTML = document.createElement("li");
             liTemplateHTMLclasses = ulHTML.firstElementChild.getAttribute("class");
