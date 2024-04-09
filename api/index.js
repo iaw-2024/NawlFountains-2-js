@@ -1,11 +1,53 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const app = express();
+const PORT = process.env.PORT || 3001;
 
-app.get("/express", (req, res) => res.send("Express on Vercel!"));
-app.get("/cliente_servidor", (req, res) => res.send("Cliente Servidor on Vercel!"));
+
+// template for datos.json path
+
+// endpoint that returns the list of items in datos.json
+// app.get("/cliente_servidor", (req, res) => res.sendFile(`/datos.json`, { root: '.'}));
+
+// endpoint which fetch the list of items in datos.json
+app.get("/cliente_servidor", (req, res) => {
+    res.sendFile(path.join(process.cwd(),"public","datos.json"));
+});
+
+// endpoint that dyanmically generates the list of items in datos.json
+app.get("/express", (req, res) => {
+    
+    fs.readFile(path.join(process.cwd(),"public","express" , "listado_tailwindcss.html"), 'utf8', (err, staticHTML) => {
+        if (err) {
+            console.error('Error reading HTML file:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        fs.readFile(path.join(process.cwd(),"public","datos.json"), 'utf8', (err, data) => {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                let datos = JSON.parse(data);
+                let dynamicHTML = "";
+                let modifiedHTML = "";
+                for (let i = 0; i < datos.length; i++) {
+                    dynamicHTML += '<li class="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 space-y-2 sm:space-y-0 sm:p-3 bg-gray-100 sm:rounded-lg">'+
+                    '<p>' + datos[i].nombre + '</p>' +
+                    '<p>' + datos[i].dni + '</p>' +
+                    '<p>' + datos[i].lu + '</p>' +
+                    '<p>' + datos[i].email + '</p>' +
+                    '<p>' + datos[i].fecha + '</p> </li>';
+                }
+                modifiedHTML = staticHTML.replace('</ul>', dynamicHTML + '</ul>');
+                res.send(modifiedHTML);
+            }
+        })
+    });
+});
 app.use(express.static('public'))
 
-
-app.listen(3001, () => console.log("Server ready on port 3001."));
+app.listen(PORT, () => console.log("Server ready on port " + PORT + "."));
 
 module.exports = app;

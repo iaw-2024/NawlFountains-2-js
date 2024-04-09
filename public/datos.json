@@ -1,0 +1,23 @@
+[
+	{
+		"nombre": "Juan Pablo",
+		"dni": "4202393",
+		"lu": "11832",
+		"email": "test@example.com",
+		"fecha": "03/04/2022"
+	},
+	{
+		"nombre": "Maria Jose Luis",
+		"dni": "120231",
+		"lu": "11832292",
+		"email": "small@example.com",
+		"fecha": "03/04/2020"
+	},
+	{
+		"nombre": "Penelope Pruebanson",
+		"dni": "92922",
+		"lu": "29211832",
+		"email": "largeEmail2922@example.com",
+		"fecha": "31/04/2001"
+	}
+]
