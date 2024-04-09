@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -11,19 +12,19 @@ const PORT = process.env.PORT || 3001;
 
 // endpoint which fetch the list of items in datos.json
 app.get("/cliente_servidor", (req, res) => {
-    console.log("Asking in "+process.cwd()+'/public/datos.json');
-    res.sendFile("/public/datos.json", { root: process.cwd() });
+    res.sendFile(path.join(process.cwd(),"public","datos.json"));
 });
 
 // endpoint that dyanmically generates the list of items in datos.json
 app.get("/express", (req, res) => {
-    fs.readFile(process.cwd()+'/public/express/listado_tailwindcss.html', 'utf8', (err, staticHTML) => {
+    
+    fs.readFile(path.join(process.cwd(),"public","express" , "listado_tailwindcss.html"), 'utf8', (err, staticHTML) => {
         if (err) {
             console.error('Error reading HTML file:', err);
             res.status(500).send('Internal Server Error');
             return;
         }
-        fs.readFile(process.cwd()+'/public/datos.json', 'utf8', (err, data) => {
+        fs.readFile(path.join(process.cwd(),"public","datos.json"), 'utf8', (err, data) => {
             if (err) {
                 console.log(err);
                 throw err;
