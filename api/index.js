@@ -11,42 +11,39 @@ const PORT = process.env.PORT || 3001;
 
 // endpoint which fetch the list of items in datos.json
 app.get("/cliente_servidor", (req, res) => {
-    let dataURL = "http://"+req.hostname+"/datos.json";
-    fetch(dataURL)
-    .then(
-        response => response.json())
-    .then(data => {
-        res.send(data);
-    })
+    res.sendFile("/public/datos.json", { root: process.cwd() });
 });
 
 // endpoint that dyanmically generates the list of items in datos.json
-app.get("/express", async (req, res) => {
-    let staticHTMLURL = "https://"+req.hostname+"/express/listado_tailwindcss.html";
-    let staticHTMLResponse = await fetch(staticHTMLURL);
-    let staticHTML = await staticHTMLResponse.text();
-
-    // console.log(staticHTML);
-    // let dataURL = "http://"+req.hostname+":3001/datos.json";
-    // let dataURLResponse = await fetch(dataURL);
-    // let data = await dataURLResponse.json();
-
-    // console.log(data);
-    // let dynamicHTML = "";
-    // let modifiedHTML = "";
-
-    // for (let i = 0; i < data.length; i++) {
-    //     dynamicHTML += '<li class="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 space-y-2 sm:space-y-0 sm:p-3 bg-gray-100 sm:rounded-lg">'+
-    //     '<p>' + data[i].nombre + '</p>' +
-    //     '<p>' + data[i].dni + '</p>' +
-    //     '<p>' + data[i].lu + '</p>' +
-    //     '<p>' + data[i].email + '</p>' +
-    //     '<p>' + data[i].fecha + '</p> </li>';
-    // }
-    modifiedHTML = staticHTML.replace('</ul>', dynamicHTML + '</ul>');
-    res.send(modifiedHTML);
+app.get("/express", (req, res) => {
+    fs.readFile(process.cwd()+'/public/express/listado_tailwindcss.html', 'utf8', (err, staticHTML) => {
+        if (err) {
+            console.error('Error reading HTML file:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        fs.readFile(process.cwd()+'/public/datos.json', 'utf8', (err, data) => {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                let datos = JSON.parse(data);
+                let dynamicHTML = "";
+                let modifiedHTML = "";
+                for (let i = 0; i < datos.length; i++) {
+                    dynamicHTML += '<li class="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 space-y-2 sm:space-y-0 sm:p-3 bg-gray-100 sm:rounded-lg">'+
+                    '<p>' + datos[i].nombre + '</p>' +
+                    '<p>' + datos[i].dni + '</p>' +
+                    '<p>' + datos[i].lu + '</p>' +
+                    '<p>' + datos[i].email + '</p>' +
+                    '<p>' + datos[i].fecha + '</p> </li>';
+                }
+                modifiedHTML = staticHTML.replace('</ul>', dynamicHTML + '</ul>');
+                res.send(modifiedHTML);
+            }
+        })
+    });
 });
-
 app.use(express.static('public'))
 
 app.listen(PORT, () => console.log("Server ready on port " + PORT + "."));
